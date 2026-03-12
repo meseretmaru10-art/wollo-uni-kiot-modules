@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="am">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wollo Uni Info Hub</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="icon.png" type="image/png">
+</head>
+<body>
+  <link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#007bff">
+<link rel="apple-touch-icon" href="icon.png">
+    <div class="container">
+        <header>
+            <h1>Wollo Uni Info Hub</h1>
+            <p>Pre-Engineering Student Info Hub</p>
+        </header>
+
+        <main>
+            <div class="selection-group">
+                <label>ሴክሽን ይምረጡ</label>
+                <select id="sectionSelect">
+                    <option value="">-- Choose Section --</option>
+                    <option value="A">Section A</option>
+                    <option value="B">Section B</option>
+                    <option value="C">Section C</option>
+                    <option value="D">Section D</option>
+                    <option value="E">Section E</option>
+                    <option value="F">Section F</option>
+                    <option value="G">Section G</option>
+                    <option value="H">Section H</option>
+                    <option value="I">Section I</option>
+                    <option value="J">Section J</option>
+                    <option value="K">Section K</option>
+                    <option value="L">Section L</option>
+                    <option value="M">Section M</option>
+                    <option value="N">Section N</option>
+                </select>
+            </div>
+
+            <div class="days-grid">
+                <button class="day-btn">Monday</button>
+                <button class="day-btn">Tuesday</button>
+                <button class="day-btn">Wednesday</button>
+                <button class="day-btn">Thursday</button>
+                <button class="day-btn">Friday</button>
+            </div>
+
+            <div id="scheduleDisplay" class="result-card">
+                <div class="initial-msg">
+                    <h3>Section - Day</h3>
+                    <p>ቀን በመምረጥ ፕሮግራሙን ይመልከቱ።</p>
+                </div>
+            </div>
+        </main>
+
+        <footer class="author-card">
+            <p><strong>ደራሲ (Author):</strong> Meseret.T</p>
+            <p><strong>መለያ ቁጥር (ID No):</strong> Wour/1784/18</p>
+            <p><strong>ተቋም:</strong> ወሎ ዩኒቨርሲቲ (KIOT)</p>
+            <div class="note">ይህ ኮድ ለ kiot freshman student የተዘጋጀ የራሴ ፈጠራ ነው።</div>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js')
+                    .then(reg => console.log('Service Worker Registered'))
+                    .catch(err => console.log('Service Worker Error', err));
+            });
+        }
+</body>
+</html>
