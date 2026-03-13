@@ -7,53 +7,39 @@
     <link rel="manifest" href="manifest.json">
     <style>
         body { font-family: sans-serif; margin: 0; background: #f4f7f6; padding-bottom: 70px; }
-        .header { background: #456d80; color: white; padding: 15px; text-align: center; font-weight: bold; position: sticky; top: 0; }
-        .page { display: none; padding: 15px; }
-        .active { display: block; }
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .header { background: #456d80; color: white; padding: 15px; text-align: center; font-weight: bold; position: sticky; top: 0; z-index: 1000; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 15px; }
         .card { background: white; padding: 25px; border-radius: 15px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.05); cursor: pointer; }
         .footer { text-align: center; padding: 20px; background: #fff; border-top: 2px solid #456d80; margin-top: 20px; }
-        .bottom-nav { position: fixed; bottom: 0; width: 100%; background: white; display: flex; border-top: 1px solid #eee; }
-        .nav-item { flex: 1; text-align: center; padding: 15px; color: #888; font-weight: bold; }
-        .nav-item.active-tab { color: #456d80; border-top: 4px solid #456d80; }
     </style>
 </head>
 <body>
 
 <div class="header">Wollo University - KIOT Hub</div>
 
-<div id="mod-page" class="page active">
-    <div class="grid">
-        <div class="card" onclick="viewPDF('maths.pdf')">📐<br>Maths</div>
-        <div class="card" onclick="viewPDF('cpp.pdf')">💻<br>C++</div>
-        <div class="card" onclick="viewPDF('english2.pdf')">📖<br>English II</div>
-        <div class="card" onclick="viewPDF('history.pdf')">⏳<br>History</div>
-        <div class="card" onclick="viewPDF('civics.pdf')">⚖️<br>Civics</div>
-        <div class="card" onclick="viewPDF('anthropology.pdf')">🌍<br>Anthro</div>
-        <div class="card" onclick="viewPDF('emerging.pdf')">🚀<br>Emerging</div>
-    </div>
-    <div class="footer">Developer: <b>Meseret.T</b><br>ID: <b>1784/18</b></div>
+<div class="grid">
+    <div class="card" onclick="viewPDF('maths.pdf')">📐<br>Maths</div>
+    <div class="card" onclick="viewPDF('cpp.pdf')">💻<br>C++</div>
+    <div class="card" onclick="viewPDF('english2.pdf')">📖<br>English II</div>
+    <div class="card" onclick="viewPDF('history.pdf')">⏳<br>History</div>
+    <div class="card" onclick="viewPDF('civics.pdf')">⚖️<br>Civics</div>
+    <div class="card" onclick="viewPDF('anthropology.pdf')">🌍<br>Anthro</div>
+    <div class="card" onclick="viewPDF('emerging.pdf')">🚀<br>Emerging</div>
 </div>
 
-<div id="gpa-page" class="page">
-    <div style="background:white; padding:20px; border-radius:15px; text-align:center;">
-        <h3>GPA Calculator</h3>
-        <p>ውጤትዎን እዚህ ያስሉ</p>
-    </div>
-</div>
-
-<div class="bottom-nav">
-    <div class="nav-item active-tab" onclick="location.reload()">📚 Modules</div>
-    <div class="nav-item" onclick="alert('GPA Calc Coming Soon')">📊 GPA Calc</div>
-</div>
+<div class="footer">Developer: <b>Meseret.T</b><br>ID: <b>1784/18</b></div>
 
 <script>
     function viewPDF(fileName) {
-        // አስፈላጊ፡ 'kiot-prengineering-hub' የሚለው ስም ከ GitHub ሪፖዚተሪህ ጋር አንድ መሆኑን አረጋግጥ
+        // ሊንኩ በትክክለኛው የሪፖዚተሪ ስም ተስተካክሏል
         const user = "meseretmaru10-art";
-        const repo = "kiot-prengineering-hub"; 
+        const repo = "wollo-uni-kiot-modules"; 
         const link = `https://raw.githubusercontent.com/${user}/${repo}/main/${fileName}`;
         window.open(link, "_blank");
+    }
+
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('sw.js');
     }
 </script>
 </body>
