@@ -6,7 +6,6 @@
     <title>KIOT Hub</title>
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#456d80">
-    
     <style>
         body { font-family: sans-serif; margin: 0; background: #f4f7f6; padding-bottom: 70px; }
         .header { background: #456d80; color: white; padding: 15px; text-align: center; font-weight: bold; position: sticky; top: 0; z-index: 1000; }
@@ -19,28 +18,26 @@
         .bottom-nav { position: fixed; bottom: 0; width: 100%; background: white; display: flex; border-top: 1px solid #eee; z-index: 2000; }
         .nav-item { flex: 1; text-align: center; padding: 15px; color: #888; font-weight: bold; cursor: pointer; }
         .nav-item.active-tab { color: #456d80; border-top: 4px solid #456d80; }
-        /* GPA Table */
         .gpa-card { background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); overflow-x: auto; }
         table { width: 100%; border-collapse: collapse; }
         th, td { padding: 10px; text-align: left; border-bottom: 1px solid #eee; }
-        select { width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc; background: #fff; font-size: 0.9rem; }
-        .calc-btn { width: 100%; background: #456d80; color: white; border: none; padding: 15px; margin-top: 20px; border-radius: 10px; font-weight: bold; font-size: 1rem; cursor: pointer; }
-        .calc-btn:active { background: #355666; }
+        select { width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc; background: #fff; }
+        .calc-btn { width: 100%; background: #456d80; color: white; border: none; padding: 15px; margin-top: 20px; border-radius: 10px; font-weight: bold; cursor: pointer; }
     </style>
 </head>
 <body>
 
-<div class="header" id="main-header">Wollo University - KIOT Hub</div>
+<div class="header">Wollo University - KIOT Hub</div>
 
 <div id="mod-page" class="page active">
     <div class="grid">
-        <div class="card" onclick="window.open('maths.pdf')">📐<br>Maths</div>
-        <div class="card" onclick="window.open('cpp.pdf')">💻<br>C++</div>
-        <div class="card" onclick="window.open('english2.pdf')">📖<br>English II</div>
-        <div class="card" onclick="window.open('history.pdf')">⏳<br>History</div>
-        <div class="card" onclick="window.open('civics.pdf')">⚖️<br>Civics</div>
-        <div class="card" onclick="window.open('anthropology.pdf')">🌍<br>Anthro</div>
-        <div class="card" onclick="window.open('emerging.pdf')">🚀<br>Emerging</div>
+        <div class="card" onclick="openFile('maths.pdf')">📐<br>Maths</div>
+        <div class="card" onclick="openFile('cpp.pdf')">💻<br>C++</div>
+        <div class="card" onclick="openFile('english2.pdf')">📖<br>English II</div>
+        <div class="card" onclick="openFile('history.pdf')">⏳<br>History</div>
+        <div class="card" onclick="openFile('civics.pdf')">⚖️<br>Civics</div>
+        <div class="card" onclick="openFile('anthropology.pdf')">🌍<br>Anthro</div>
+        <div class="card" onclick="openFile('emerging.pdf')">🚀<br>Emerging</div>
     </div>
     <div class="footer">
         Developer: <b>Meseret.T</b><br>
@@ -61,11 +58,6 @@
             <h2 id="gpa-res" style="color:#456d80; margin:0;"></h2>
         </div>
     </div>
-    <div class="footer">
-        Developer: <b>Meseret.T</b><br>
-        ID: <b>1784/18</b><br>
-        <b>Wollo University - KIOT</b>
-    </div>
 </div>
 
 <div class="bottom-nav">
@@ -74,13 +66,14 @@
 </div>
 
 <script>
-    // PWA Service Worker Registration
+    // ፋይሎችን ለመክፈት
+    function openFile(fileName) {
+        window.open(fileName, '_blank');
+    }
+
+    // PWA Service Worker
     if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            navigator.serviceWorker.register('./sw.js')
-                .then(reg => console.log('Service Worker Registered'))
-                .catch(err => console.log('Service Worker Failed', err));
-        });
+        navigator.serviceWorker.register('./sw.js').catch(err => console.log(err));
     }
 
     function showTab(tab) {
@@ -102,51 +95,26 @@
         courses.forEach(c => {
             tbody.innerHTML += `<tr>
                 <td>${c}</td>
-                <td>
-                    <select class="cr">
-                        <option value="3">3</option>
-                        <option value="4">4</option>
-                        <option value="5">5</option>
-                    </select>
-                </td>
-                <td>
-                    <select class="gr">
-                        <option value="4.0">A+</option>
-                        <option value="4.0">A</option>
-                        <option value="3.75">A-</option>
-                        <option value="3.5">B+</option>
-                        <option value="3.0">B</option>
-                        <option value="2.75">B-</option>
-                        <option value="2.5">C+</option>
-                        <option value="2.0">C</option>
-                        <option value="1.75">C-</option>
-                        <option value="0.0">F</option>
-                    </select>
-                </td>
-            </tr>`;
+                <td><select class="cr"><option value="3">3</option><option value="4">4</option><option value="5">5</option></select></td>
+                <td><select class="gr">
+                    <option value="4.0">A+</option><option value="4.0">A</option><option value="3.75">A-</option>
+                    <option value="3.5">B+</option><option value="3.0">B</option><option value="2.75">B-</option>
+                    <option value="2.5">C+</option><option value="2.0">C</option><option value="1.75">C-</option>
+                    <option value="0.0">F</option>
+                </select></td></tr>`;
         });
     }
 
     function calcGPA() {
         let tp = 0, tc = 0;
-        let crs = document.querySelectorAll('.cr');
-        let grs = document.querySelectorAll('.gr');
-
+        let crs = document.querySelectorAll('.cr'), grs = document.querySelectorAll('.gr');
         for(let i=0; i<crs.length; i++) {
-            let credit = parseFloat(crs[i].value);
-            let gradePoint = parseFloat(grs[i].value);
-            tp += (credit * gradePoint);
-            tc += credit;
+            tp += (parseFloat(crs[i].value) * parseFloat(grs[i].value));
+            tc += parseFloat(crs[i].value);
         }
-        
-        const finalGPA = (tp / tc).toFixed(2);
-        const resBox = document.getElementById('gpa-res-box');
-        const resText = document.getElementById('gpa-res');
-        
-        resBox.style.display = "block";
-        resText.innerText = "Your GPA is: " + finalGPA;
+        document.getElementById('gpa-res-box').style.display = "block";
+        document.getElementById('gpa-res').innerText = "GPA: " + (tp/tc).toFixed(2);
     }
-
     window.onload = initApp;
 </script>
 </body>
