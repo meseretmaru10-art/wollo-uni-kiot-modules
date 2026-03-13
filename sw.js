@@ -1,29 +1,23 @@
-const cacheName = 'kiot-hub-v1';
+const CACHE_NAME = 'kiot-hub-v2';
 const assets = [
-  './',
-  './index.html',
-  './manifest.json',
-  './maths.pdf',
-  './cpp.pdf',
-  './english2.pdf',
-  './history.pdf',
-  './civics.pdf',
-  './anthropology.pdf',
-  './emerging.pdf'
+  '/wollo-uni-kiot-modules/',
+  '/wollo-uni-kiot-modules/index.html',
+  '/wollo-uni-kiot-modules/manifest.json',
+  '/wollo-uni-kiot-modules/icon.png'
 ];
 
-self.addEventListener('install', e => {
-  e.waitUntil(
-    caches.open(cacheName).then(cache => {
-      return cache.addAll(assets);
+self.addEventListener('install', (evt) => {
+  evt.waitUntil(
+    caches.open(CACHE_NAME).then((cache) => {
+      cache.addAll(assets);
     })
   );
 });
 
-self.addEventListener('fetch', e => {
-  e.respondWith(
-    caches.match(e.request).then(res => {
-      return res || fetch(e.request);
+self.addEventListener('fetch', (evt) => {
+  evt.respondWith(
+    caches.match(evt.request).then((res) => {
+      return res || fetch(evt.request);
     })
   );
 });
