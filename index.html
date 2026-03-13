@@ -21,8 +21,8 @@
         .gpa-card { background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); overflow-x: auto; }
         table { width: 100%; border-collapse: collapse; }
         th, td { padding: 10px; text-align: left; border-bottom: 1px solid #eee; }
-        select { width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc; background: #fff; }
-        .calc-btn { width: 100%; background: #456d80; color: white; border: none; padding: 15px; margin-top: 20px; border-radius: 10px; font-weight: bold; cursor: pointer; }
+        select { width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc; background: #fff; font-size: 0.9rem; }
+        .calc-btn { width: 100%; background: #456d80; color: white; border: none; padding: 15px; margin-top: 20px; border-radius: 10px; font-weight: bold; font-size: 1rem; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -31,13 +31,13 @@
 
 <div id="mod-page" class="page active">
     <div class="grid">
-        <div class="card" onclick="openFile('maths.pdf')">📐<br>Maths</div>
-        <div class="card" onclick="openFile('cpp.pdf')">💻<br>C++</div>
-        <div class="card" onclick="openFile('english2.pdf')">📖<br>English II</div>
-        <div class="card" onclick="openFile('history.pdf')">⏳<br>History</div>
-        <div class="card" onclick="openFile('civics.pdf')">⚖️<br>Civics</div>
-        <div class="card" onclick="openFile('anthropology.pdf')">🌍<br>Anthro</div>
-        <div class="card" onclick="openFile('emerging.pdf')">🚀<br>Emerging</div>
+        <div class="card" onclick="window.open('maths.pdf')">📐<br>Maths</div>
+        <div class="card" onclick="window.open('cpp.pdf')">💻<br>C++</div>
+        <div class="card" onclick="window.open('english2.pdf')">📖<br>English II</div>
+        <div class="card" onclick="window.open('history.pdf')">⏳<br>History</div>
+        <div class="card" onclick="window.open('civics.pdf')">⚖️<br>Civics</div>
+        <div class="card" onclick="window.open('anthropology.pdf')">🌍<br>Anthro</div>
+        <div class="card" onclick="window.open('emerging.pdf')">🚀<br>Emerging</div>
     </div>
     <div class="footer">
         Developer: <b>Meseret.T</b><br>
@@ -58,6 +58,11 @@
             <h2 id="gpa-res" style="color:#456d80; margin:0;"></h2>
         </div>
     </div>
+    <div class="footer">
+        Developer: <b>Meseret.T</b><br>
+        ID: <b>1784/18</b><br>
+        <b>Wollo University - KIOT</b>
+    </div>
 </div>
 
 <div class="bottom-nav">
@@ -66,14 +71,10 @@
 </div>
 
 <script>
-    // ፋይሎችን ለመክፈት
-    function openFile(fileName) {
-        window.open(fileName, '_blank');
-    }
-
-    // PWA Service Worker
     if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('./sw.js').catch(err => console.log(err));
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('./sw.js').catch(err => console.log(err));
+        });
     }
 
     function showTab(tab) {
