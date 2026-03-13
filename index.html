@@ -32,13 +32,20 @@
         <div class="card" onclick="viewPDF('anthropology.pdf')">🌍<br>Anthro</div>
         <div class="card" onclick="viewPDF('emerging.pdf')">🚀<br>Emerging</div>
     </div>
-    <div class="footer">Developer: <b>Meseret.T</b><br>ID: <b>1784/18</b><br><b>Wollo University - KIOT</b></div>
+    <div class="footer">
+        Developer: <b>Meseret.T</b><br>
+        ID: <b>1784/18</b><br>
+        <b>Wollo University - KIOT</b>
+    </div>
 </div>
 
 <div id="gpa-page" class="page">
-    <div style="background:white; padding:20px; border-radius:15px; text-align:center;">
-        <h3>GPA Calculator</h3>
-        <p>የ GPA ማስያ ገጽ</p>
+    <div style="background:white; padding:20px; border-radius:15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+        <h3 style="text-align:center;">GPA Calculator</h3>
+        <p style="text-align:center; color:#666;">የ freshman ተማሪዎች ውጤት ማስያ</p>
+        <div id="gpa-inputs"></div>
+        <button onclick="calcGPA()" style="width:100%; background:#456d80; color:white; padding:15px; border:none; border-radius:10px; margin-top:15px; font-weight:bold;">GPA አስላ</button>
+        <h2 id="result" style="text-align:center; color:#456d80; margin-top:20px;"></h2>
     </div>
     <div class="footer">Developer: <b>Meseret.T</b><br>ID: <b>1784/18</b></div>
 </div>
@@ -62,9 +69,31 @@
     }
 
     function viewPDF(fileName) {
-        const siteUrl = "https://meseretmaru10-art.github.io/";
-        const googleViewer = "https://docs.google.com/viewer?url=";
-        window.open(googleViewer + siteUrl + fileName, "_blank");
+        // የኢሜይል አካውንት ሳይጠይቅ ፋይሉን በቀጥታ የሚከፍትበት መንገድ
+        const siteUrl = "https://meseretmaru10-art.github.io/" + fileName;
+        window.open(siteUrl, "_blank");
+    }
+
+    const subjs = ["Maths", "C++", "English II", "History", "Civics", "Anthro", "Emerging"];
+    const inputArea = document.getElementById('gpa-inputs');
+    subjs.forEach(s => {
+        inputArea.innerHTML += `<div style="margin-bottom:10px; display:flex; justify-content:space-between; align-items:center;">
+            <span>${s}</span>
+            <div style="display:flex; gap:5px;">
+                <select class="cr" style="padding:5px;"><option value="3">3 Cr</option><option value="4">4 Cr</option><option value="5">5 Cr</option></select>
+                <select class="gr" style="padding:5px;"><option value="4">A</option><option value="3.75">A-</option><option value="3.5">B+</option><option value="3">B</option><option value="2">C</option><option value="0">F</option></select>
+            </div>
+        </div>`;
+    });
+
+    function calcGPA() {
+        let tp = 0, tc = 0;
+        let crs = document.querySelectorAll('.cr'), grs = document.querySelectorAll('.gr');
+        for(let i=0; i<crs.length; i++) {
+            tp += (parseFloat(crs[i].value) * parseFloat(grs[i].value));
+            tc += parseFloat(crs[i].value);
+        }
+        document.getElementById('result').innerText = "GPA: " + (tp/tc).toFixed(2);
     }
 </script>
 </body>
