@@ -17,11 +17,12 @@
         .nav-item { flex: 1; text-align: center; padding: 15px; color: #888; font-weight: bold; cursor: pointer; }
         .nav-item.active-tab { color: #456d80; border-top: 4px solid #456d80; }
         /* GPA Table */
-        .gpa-card { background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .gpa-card { background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); overflow-x: auto; }
         table { width: 100%; border-collapse: collapse; }
         th, td { padding: 10px; text-align: left; border-bottom: 1px solid #eee; }
-        select { width: 100%; padding: 8px; border-radius: 5px; }
-        .calc-btn { width: 100%; background: #456d80; color: white; border: none; padding: 15px; margin-top: 20px; border-radius: 10px; font-weight: bold; }
+        select { width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc; background: #fff; font-size: 0.9rem; }
+        .calc-btn { width: 100%; background: #456d80; color: white; border: none; padding: 15px; margin-top: 20px; border-radius: 10px; font-weight: bold; font-size: 1rem; cursor: pointer; }
+        .calc-btn:active { background: #355666; }
     </style>
 </head>
 <body>
@@ -53,7 +54,9 @@
             <tbody id="gpa-table"></tbody>
         </table>
         <button class="calc-btn" onclick="calcGPA()">GPA አስላ (Calculate)</button>
-        <h2 id="gpa-res" style="text-align:center; color:#456d80; margin-top:15px;"></h2>
+        <div id="gpa-res-box" style="display:none; text-align:center; margin-top:20px; padding:15px; background:#e8f0f2; border-radius:10px;">
+            <h2 id="gpa-res" style="color:#456d80; margin:0;"></h2>
+        </div>
     </div>
     <div class="footer">
         Developer: <b>Meseret.T</b><br>
@@ -82,21 +85,58 @@
 
     const courses = ["Maths", "C++", "English II", "History", "Civics", "Anthro", "Emerging"];
     const tbody = document.getElementById('gpa-table');
-    courses.forEach(c => {
-        tbody.innerHTML += `<tr><td>${c}</td>
-            <td><select class="cr"><option value="3">3</option><option value="4">4</option><option value="5">5</option></select></td>
-            <td><select class="gr"><option value="4">A</option><option value="3.5">B+</option><option value="3">B</option><option value="0">F</option></select></td></tr>`;
-    });
+
+    // ገጹ ሲከፈት ሰንጠረዡን በራሱ እንዲሞላ
+    function initApp() {
+        courses.forEach(c => {
+            tbody.innerHTML += `<tr>
+                <td>${c}</td>
+                <td>
+                    <select class="cr">
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                </td>
+                <td>
+                    <select class="gr">
+                        <option value="4.0">A+</option>
+                        <option value="4.0">A</option>
+                        <option value="3.75">A-</option>
+                        <option value="3.5">B+</option>
+                        <option value="3.0">B</option>
+                        <option value="2.75">B-</option>
+                        <option value="2.5">C+</option>
+                        <option value="2.0">C</option>
+                        <option value="1.75">C-</option>
+                        <option value="0.0">F</option>
+                    </select>
+                </td>
+            </tr>`;
+        });
+    }
 
     function calcGPA() {
         let tp = 0, tc = 0;
-        let crs = document.querySelectorAll('.cr'), grs = document.querySelectorAll('.gr');
+        let crs = document.querySelectorAll('.cr');
+        let grs = document.querySelectorAll('.gr');
+
         for(let i=0; i<crs.length; i++) {
-            tp += (parseFloat(crs[i].value) * parseFloat(grs[i].value));
-            tc += parseFloat(crs[i].value);
+            let credit = parseFloat(crs[i].value);
+            let gradePoint = parseFloat(grs[i].value);
+            tp += (credit * gradePoint);
+            tc += credit;
         }
-        document.getElementById('gpa-res').innerText = "GPA: " + (tp/tc).toFixed(2);
+        
+        const finalGPA = (tp / tc).toFixed(2);
+        const resBox = document.getElementById('gpa-res-box');
+        const resText = document.getElementById('gpa-res');
+        
+        resBox.style.display = "block";
+        resText.innerText = "Your GPA is: " + finalGPA;
     }
+
+    window.onload = initApp;
 </script>
 </body>
 </html>
