@@ -4,39 +4,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KIOT Hub</title>
+    <link rel="manifest" href="manifest.json">
     <style>
-        body { font-family: sans-serif; margin: 0; background: #f4f7f6; padding-bottom: 70px; }
-        .header { background: #456d80; color: white; padding: 15px; text-align: center; font-weight: bold; position: sticky; top: 0; z-index: 1000; }
+        body { font-family: sans-serif; margin: 0; background: #f4f7f6; padding-bottom: 80px; }
+        .header { background: #456d80; color: white; padding: 18px; text-align: center; font-weight: bold; position: sticky; top: 0; z-index: 1000; }
         .page { display: none; padding: 15px; }
         .active { display: block; }
         .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
         .card { background: white; padding: 25px; border-radius: 15px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.05); cursor: pointer; border: 1px solid #eef; }
         .footer { text-align: center; padding: 25px; background: #fff; border-top: 3px solid #456d80; margin-top: 30px; line-height: 1.8; }
         .footer b { color: #000; font-size: 1.1rem; }
-        .bottom-nav { position: fixed; bottom: 0; width: 100%; background: white; display: flex; border-top: 1px solid #eee; z-index: 2000; }
+        .bottom-nav { position: fixed; bottom: 0; width: 100%; background: white; display: flex; border-top: 1px solid #eee; z-index: 2000; height: 65px; }
         .nav-item { flex: 1; text-align: center; padding: 15px; color: #888; font-weight: bold; cursor: pointer; }
         .nav-item.active-tab { color: #456d80; border-top: 4px solid #456d80; }
-        /* GPA Table */
         .gpa-card { background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
         table { width: 100%; border-collapse: collapse; }
-        th, td { padding: 10px; text-align: left; border-bottom: 1px solid #eee; }
+        td { padding: 10px; border-bottom: 1px solid #eee; }
         select { width: 100%; padding: 8px; border-radius: 5px; }
         .calc-btn { width: 100%; background: #456d80; color: white; border: none; padding: 15px; margin-top: 20px; border-radius: 10px; font-weight: bold; }
     </style>
 </head>
 <body>
 
-<div class="header" id="main-header">Wollo University - KIOT Hub</div>
+<div class="header">Wollo University - KIOT Hub</div>
 
 <div id="mod-page" class="page active">
     <div class="grid">
-        <div class="card" onclick="window.open('maths.pdf')">📐<br>Maths</div>
-        <div class="card" onclick="window.open('cpp.pdf')">💻<br>C++</div>
-        <div class="card" onclick="window.open('english2.pdf')">📖<br>English II</div>
-        <div class="card" onclick="window.open('history.pdf')">⏳<br>History</div>
-        <div class="card" onclick="window.open('civics.pdf')">⚖️<br>Civics</div>
-        <div class="card" onclick="window.open('anthropology.pdf')">🌍<br>Anthro</div>
-        <div class="card" onclick="window.open('emerging.pdf')">🚀<br>Emerging</div>
+        <div class="card" onclick="viewPDF('maths.pdf')">📐<br>Maths</div>
+        <div class="card" onclick="viewPDF('cpp.pdf')">💻<br>C++</div>
+        <div class="card" onclick="viewPDF('english2.pdf')">📖<br>English II</div>
+        <div class="card" onclick="viewPDF('history.pdf')">⏳<br>History</div>
+        <div class="card" onclick="viewPDF('civics.pdf')">⚖️<br>Civics</div>
+        <div class="card" onclick="viewPDF('anthropology.pdf')">🌍<br>Anthro</div>
+        <div class="card" onclick="viewPDF('emerging.pdf')">🚀<br>Emerging</div>
     </div>
     <div class="footer">
         Developer: <b>Meseret.T</b><br>
@@ -47,9 +47,8 @@
 
 <div id="gpa-page" class="page">
     <div class="gpa-card">
-        <h3>GPA Calculator</h3>
+        <h3 style="text-align:center;">GPA Calculator</h3>
         <table>
-            <thead><tr><th>Subject</th><th>Cr.</th><th>Grade</th></tr></thead>
             <tbody id="gpa-table"></tbody>
         </table>
         <button class="calc-btn" onclick="calcGPA()">GPA አስላ (Calculate)</button>
@@ -57,8 +56,7 @@
     </div>
     <div class="footer">
         Developer: <b>Meseret.T</b><br>
-        ID: <b>1784/18</b><br>
-        <b>Wollo University - KIOT</b>
+        ID: <b>1784/18</b>
     </div>
 </div>
 
@@ -80,12 +78,19 @@
         }
     }
 
+    function viewPDF(fileName) {
+        // የፒዲኤፍ ፋይሎችን በትክክል ለመክፈት (Repository: wollo-uni-kiot-modules)
+        const user = "meseretmaru10-art";
+        const repo = "wollo-uni-kiot-modules";
+        window.open(`https://raw.githubusercontent.com/${user}/${repo}/main/${fileName}`, "_blank");
+    }
+
     const courses = ["Maths", "C++", "English II", "History", "Civics", "Anthro", "Emerging"];
     const tbody = document.getElementById('gpa-table');
     courses.forEach(c => {
-        tbody.innerHTML += `<tr><td>${c}</td>
-            <td><select class="cr"><option value="3">3</option><option value="4">4</option><option value="5">5</option></select></td>
-            <td><select class="gr"><option value="4">A</option><option value="3.5">B+</option><option value="3">B</option><option value="0">F</option></select></td></tr>`;
+        tbody.innerHTML += `<tr><td><b>${c}</b></td>
+            <td><select class="cr"><option value="3">3 Cr</option><option value="4">4 Cr</option><option value="5">5 Cr</option></select></td>
+            <td><select class="gr"><option value="4">A</option><option value="3.5">B+</option><option value="3">B</option><option value="2">C</option><option value="0">F</option></select></td></tr>`;
     });
 
     function calcGPA() {
@@ -96,6 +101,11 @@
             tc += parseFloat(crs[i].value);
         }
         document.getElementById('gpa-res').innerText = "GPA: " + (tp/tc).toFixed(2);
+    }
+
+    // Service Worker ለመመዝገብ (ያለ ዳታ እንዲሰራ)
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('sw.js');
     }
 </script>
 </body>
