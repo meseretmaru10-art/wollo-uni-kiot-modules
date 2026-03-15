@@ -1,9 +1,8 @@
-const CACHE_NAME = 'kiot-hub-v5';
+const CACHE_NAME = 'kiot-hub-v6';
 const assets = [
   '/wollo-uni-kiot-modules/',
   '/wollo-uni-kiot-modules/index.html',
-  '/wollo-uni-kiot-modules/manifest.json',
-  '/wollo-uni-kiot-modules/sw.js'
+  '/wollo-uni-kiot-modules/manifest.json'
 ];
 
 self.addEventListener('install', (e) => {
