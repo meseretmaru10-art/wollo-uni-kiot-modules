@@ -78,11 +78,8 @@
     }
 
     function viewPDF(fileName) {
-        // የ GitHub Pages አድራሻን በመጠቀም ቀጥታ እንዲከፈት ማድረግ
-        const user = "meseretmaru10-art";
-        const repo = "wollo-uni-kiot-modules";
-        const url = `https://${user}.github.io/${repo}/${fileName}`;
-        window.open(url, "_blank");
+        // በቀጥታ ፋይሉን እንዲከፍት ማድረግ (ለ Offline ይረዳዋል)
+        window.open(fileName, "_blank");
     }
 
     const courses = ["Maths", "C++", "English II", "History", "Civics", "Anthro", "Emerging"];
@@ -100,11 +97,16 @@
             tp += (parseFloat(crs[i].value) * parseFloat(grs[i].value));
             tc += parseFloat(crs[i].value);
         }
-        document.getElementById('gpa-res').innerText = "GPA: " + (tp/tc).toFixed(2);
+        let finalGpa = tc > 0 ? (tp/tc).toFixed(2) : "0.00";
+        document.getElementById('gpa-res').innerText = "GPA: " + finalGpa;
     }
 
     if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('sw.js');
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('./sw.js')
+            .then(reg => console.log('Service Worker Registered'))
+            .catch(err => console.log('Error:', err));
+        });
     }
 </script>
 </body>
