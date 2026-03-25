@@ -6,29 +6,33 @@
     <title>KIOT Hub - Wollo University</title>
     <link rel="manifest" href="manifest.json">
     <style>
-        body { font-family: sans-serif; margin: 0; background: #f4f7f6; padding-bottom: 80px; }
+        body { font-family: sans-serif; margin: 0; background: #f4f7f6; padding-bottom: 80px; overflow-x: hidden; }
         .header { background: #456d80; color: white; padding: 18px; text-align: center; font-weight: bold; position: sticky; top: 0; z-index: 1000; }
         .page { display: none; padding: 15px; animation: fadeIn 0.3s ease; }
         .active { display: block; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
+        /* Modules Grid */
         .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-        .card { background: white; padding: 25px; border-radius: 15px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.05); cursor: pointer; border: 1px solid #eef; }
+        .card { background: white; padding: 20px; border-radius: 12px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.1); cursor: pointer; border: 1px solid #eef; transition: 0.3s; }
+        .card:active { transform: scale(0.95); background: #f0f0f0; }
 
-        /* PDF Viewer Overlay */
+        /* PDF Overlay - ዳውንሎድ እንዳይመጣ የሚከለክል */
         #pdf-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 3000; }
-        iframe { width: 100%; height: 100%; border: none; background: #fff; }
+        .close-btn { position: absolute; top: 10px; right: 10px; background: #ff5252; color: white; border: none; padding: 10px 15px; border-radius: 5px; font-weight: bold; z-index: 3001; }
+        iframe { width: 100%; height: 100%; border: none; }
 
         /* GPA Styling */
         .gpa-card { background: white; padding: 15px; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
         .gpa-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding: 8px; border-bottom: 1px solid #f0f0f0; }
-        select { padding: 8px; border-radius: 6px; border: 1px solid #ddd; background: #fff; }
+        select { padding: 8px; border-radius: 6px; border: 1px solid #ddd; }
         .calc-btn { width: 100%; background: #456d80; color: white; border: none; padding: 15px; border-radius: 10px; font-weight: bold; margin-top: 15px; }
 
+        /* Navigation */
         .bottom-nav { position: fixed; bottom: 0; width: 100%; background: white; display: flex; border-top: 1px solid #eee; height: 65px; z-index: 2000; }
         .nav-item { flex: 1; text-align: center; padding: 15px; color: #888; font-weight: bold; cursor: pointer; }
         .nav-item.active-tab { color: #456d80; border-top: 4px solid #456d80; background: #f9fbfc; }
-        .footer { text-align: center; padding: 25px; background: #fff; border-top: 3px solid #456d80; margin-top: 30px; font-size: 0.9rem; line-height: 1.6; }
+        .footer { text-align: center; padding: 25px; background: #fff; border-top: 3px solid #456d80; margin-top: 30px; font-size: 0.9rem; }
     </style>
 </head>
 <body>
@@ -59,13 +63,14 @@
         <div class="footer">Developer: <b>Meseret.T</b></div>
     </div>
 
-    <nav class="bottom-nav">
+    <div class="bottom-nav">
         <div class="nav-item active-tab" id="tab-mod" onclick="showTab('mod')">📚 Modules</div>
         <div class="nav-item" id="tab-gpa" onclick="showTab('gpa')">📊 GPA Calc</div>
-    </nav>
+    </div>
 </div>
 
 <div id="pdf-overlay">
+    <button class="close-btn" onclick="closePDF()">X ዝጋ</button>
     <iframe id="pdf-frame" src=""></iframe>
 </div>
 
@@ -82,13 +87,14 @@
         }
     }
 
+    // ፒዲኤፍ ዳውንሎድ እንዳይመስል በአፑ ውስጥ መክፈቻ
     function viewPDF(fileName) {
         const overlay = document.getElementById('pdf-overlay');
         const iframe = document.getElementById('pdf-frame');
         const main = document.getElementById('main-content');
 
-        // በስልኩ ብሮውዘር እንዲከፍት ቀጥታ ስሙን እንሰጠዋለን (offline እንዲሰራ)
-        iframe.src = fileName; 
+        // Toolbar=0 ዳውንሎድ ቁልፍን ለመደበቅ ይረዳል
+        iframe.src = fileName + "#toolbar=0&navpanes=0&scrollbar=0";
         overlay.style.display = 'block';
         main.style.display = 'none';
 
@@ -101,38 +107,7 @@
         document.getElementById('pdf-frame').src = "";
     }
 
-    window.onpopstate = function() {
-        closePDF();
-    };
+    window.onpopstate = function() { closePDF(); };
 
-    // GPA Inputs (Sem I & II courses)
-    const courses = ["Maths", "C++", "English II", "History", "Civics", "Anthro", "Emerging"];
-    const container = document.getElementById('gpa-inputs');
-    courses.forEach(c => {
-        container.innerHTML += `<div class="gpa-row"><b>${c}</b>
-            <div>
-                <select class="cr"><option value="3">3 Cr</option><option value="4">4 Cr</option><option value="2">2 Cr</option></select>
-                <select class="gr">
-                    <option value="4">A</option><option value="3.75">A-</option>
-                    <option value="3.5">B+</option><option value="3">B</option><option value="2.75">B-</option>
-                    <option value="2.5">C+</option><option value="2">C</option><option value="0">F</option>
-                </select>
-            </div></div>`;
-    });
-
-    function calcGPA() {
-        let tp = 0, tc = 0;
-        let crs = document.querySelectorAll('.cr'), grs = document.querySelectorAll('.gr');
-        for(let i=0; i<crs.length; i++) {
-            tp += (parseFloat(crs[i].value) * parseFloat(grs[i].value));
-            tc += parseFloat(crs[i].value);
-        }
-        document.getElementById('gpa-res').innerText = "GPA: " + (tp/tc).toFixed(2);
-    }
-
-    if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('./sw.js');
-    }
-</script>
-</body>
-</html>
+    // GPA Generator
+    const courses = ["Maths", "C++", "English II", "History", "Civics",
