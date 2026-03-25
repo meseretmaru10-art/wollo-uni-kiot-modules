@@ -1,4 +1,4 @@
-const CACHE_NAME = 'kiot-hub-v22'; // አዲስ ስም cache እንዲያድስ
+const CACHE_NAME = 'kiot-hub-v25'; // ካሸውን ለማደስ ቁጥሩን ቀይሬዋለሁ
 const assets = [
   './',
   './index.html',
@@ -10,17 +10,4 @@ const assets = [
   './history.pdf',
   './civics.pdf',
   './anthropology.pdf',
-  './emerging.pdf'
-];
-
-self.addEventListener('install', (e) => {
-  e.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(assets))
-  );
-});
-
-self.addEventListener('fetch', (e) => {
-  e.respondWith(
-    caches.match(e.request).then((res) => res || fetch(e.request))
-  );
-});
+  './emerging.pdf
