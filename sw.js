@@ -1,4 +1,4 @@
-const CACHE_NAME = 'kiot-hub-v5';
+const CACHE_NAME = 'kiot-modules-v1';
 const assets = [
   './',
   './index.html',
@@ -13,23 +13,25 @@ const assets = [
   './emerging.pdf'
 ];
 
+// አፑ እንደተከፈተ ወዲያውኑ ፋይሎቹን መጫን እንዲጀምር
 self.addEventListener('install', (e) => {
-  self.skipWaiting();
+  self.skipWaiting(); 
   e.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => cache.addAll(assets))
+    caches.open(CACHE_NAME).then((cache) => {
+      return cache.addAll(assets);
+    })
   );
 });
 
+// አዲሱ ሰው ሲከፍተው ወዲያውኑ እንዲነቃቃ
 self.addEventListener('activate', (e) => {
-  e.waitUntil(
-    caches.keys().then((keys) => Promise.all(
-      keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k))
-    ))
-  );
+  e.waitUntil(clients.claim()); 
 });
 
 self.addEventListener('fetch', (e) => {
   e.respondWith(
-    caches.match(e.request).then((res) => res || fetch(e.request))
+    caches.match(e.request).then((res) => {
+      return res || fetch(e.request);
+    })
   );
 });
