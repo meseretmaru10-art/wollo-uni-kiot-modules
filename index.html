@@ -15,10 +15,9 @@
         .card { background: white; padding: 25px; border-radius: 15px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.05); cursor: pointer; border: 1px solid #eef; transition: 0.2s; }
         .card:active { transform: scale(0.95); background: #f0f4f5; }
         
-        /* PDF Viewer Styling - ዳውንሎድ እንዳይጠይቅ የሚረዳ */
+        /* PDF Viewer Styling - ቴሌግራም ላይ ዳውንሎድ እንዳይጠይቅ */
         #pdf-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 3000; }
-        .pdf-header { background: #456d80; color: white; padding: 12px; display: flex; justify-content: space-between; align-items: center; font-weight: bold; }
-        .close-btn { background: #ff4444; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; }
+        .pdf-header { background: #456d80; color: white; padding: 15px; text-align: center; font-weight: bold; }
         iframe { width: 100%; height: calc(100% - 55px); border: none; }
 
         .footer { text-align: center; padding: 25px; background: #fff; border-top: 3px solid #456d80; margin-top: 30px; line-height: 1.8; font-size: 0.9rem; }
@@ -76,7 +75,6 @@
 <div id="pdf-overlay">
     <div class="pdf-header">
         <span id="pdf-title">Viewer</span>
-        <button class="close-btn" onclick="closePDF()">X ዝጋ</button>
     </div>
     <iframe id="pdf-frame"></iframe>
 </div>
@@ -100,20 +98,23 @@
         const main = document.getElementById('main-content');
         document.getElementById('pdf-title').innerText = fileName;
 
-        // ያንተ GitHub Pages ሊንክ
-        const fileUrl = `https://meseretmaru10-art.github.io/wollo-uni-kiot-modules/${fileName}`;
+        // GitHub Pages ሊንክህን እዚህ ጋር አስተካክል (maru10-art ከሆነ)
+        const fileUrl = `https://maru10-art.github.io/wollo-uni-kiot-modules/${fileName}`;
 
-        if (navigator.onLine) {
-            // ኢንተርኔት ካለ በ Google Viewer ዳውንሎድ ሳይጠይቅ በአፑ ውስጥ ይከፍታል
-            iframe.src = `https://docs.google.com/gview?embedded=true&url=${fileUrl}`;
-        } else {
-            // ኢንተርኔት ከሌለ ስልኩ ላይ ወዳለው ፋይል ቀጥታ ይሄዳል
-            iframe.src = fileName;
-        }
+        // ቴሌግራም ላይ ዳውንሎድ እንዳይጠይቅ በ Google Viewer በኩል መክፈት
+        iframe.src = `https://docs.google.com/gview?embedded=true&url=${encodeURIComponent(fileUrl)}`;
         
         overlay.style.display = 'block';
         main.style.display = 'none';
+
+        // የስልኩ መመለሻ ቁልፍ እንዲሰራ ታሪክ መመዝገብ
+        window.history.pushState({ pdfOpen: true }, "");
     }
+
+    // በስልኩ መመለሻ ሲነካ ፒዲኤፉን እንዲዘጋ ማድረግ
+    window.onpopstate = function(event) {
+        closePDF();
+    };
 
     function closePDF() {
         document.getElementById('pdf-overlay').style.display = 'none';
@@ -121,7 +122,7 @@
         document.getElementById('pdf-frame').src = "";
     }
 
-    // GPA Calculation logic
+    // GPA Logic
     const courses = ["Maths", "C++", "English II", "History", "Civics", "Anthro", "Emerging"];
     const tbody = document.getElementById('gpa-table');
     courses.forEach(c => {
