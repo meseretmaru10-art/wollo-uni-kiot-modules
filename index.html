@@ -7,29 +7,28 @@
     <link rel="manifest" href="manifest.json">
     <style>
         body { font-family: sans-serif; margin: 0; background: #f4f7f6; padding-bottom: 80px; }
-        .header { background: #456d80; color: white; padding: 18px; text-align: center; font-weight: bold; position: sticky; top: 0; z-index: 1000; }
-        .page { display: none; padding: 15px; }
+        .header { background: #456d80; color: white; padding: 18px; text-align: center; font-weight: bold; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .page { display: none; padding: 15px; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         .active { display: block; }
-        
-        /* Grid and Cards */
         .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
         .card { background: white; padding: 25px; border-radius: 15px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.05); cursor: pointer; border: 1px solid #eef; }
         
-        /* GPA Styling */
-        .gpa-row { display: flex; justify-content: space-between; align-items: center; background: white; padding: 10px; margin-bottom: 8px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.03); }
-        select { padding: 6px; border-radius: 6px; border: 1px solid #ddd; background: #fff; width: 75px; font-size: 0.9rem; }
-
-        /* PDF Viewer Overlay */
+        /* PDF Viewer Styling */
         #pdf-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 3000; }
-        .pdf-header { background: #456d80; color: white; padding: 15px; text-align: center; font-weight: bold; }
+        .pdf-header { background: #456d80; color: white; padding: 15px; text-align: center; font-weight: bold; display: flex; justify-content: space-between; align-items: center; }
+        .close-btn { background: #ff4d4d; color: white; border: none; padding: 5px 15px; border-radius: 5px; cursor: pointer; }
         iframe { width: 100%; height: calc(100% - 55px); border: none; }
 
-        /* Footer and Nav */
-        .footer { text-align: center; padding: 20px; font-size: 0.9rem; line-height: 1.6; border-top: 2px solid #456d80; margin-top: 20px; background: #fff; }
-        .bottom-nav { position: fixed; bottom: 0; width: 100%; background: white; display: flex; border-top: 1px solid #eee; height: 65px; z-index: 2000; }
+        /* GPA Styling */
+        .gpa-row { display: flex; justify-content: space-between; align-items: center; background: white; padding: 12px; margin-bottom: 8px; border-radius: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.03); }
+        select { padding: 8px; border-radius: 6px; border: 1px solid #ddd; background: #fff; }
+
+        .footer { text-align: center; padding: 25px; background: #fff; border-top: 3px solid #456d80; margin-top: 30px; font-size: 0.9rem; line-height: 1.6; }
+        .bottom-nav { position: fixed; bottom: 0; width: 100%; background: white; display: flex; border-top: 1px solid #eee; z-index: 2000; height: 65px; }
         .nav-item { flex: 1; text-align: center; padding: 15px; color: #888; font-weight: bold; cursor: pointer; }
-        .nav-item.active-tab { color: #456d80; border-top: 4px solid #456d80; }
-        .calc-btn { width: 100%; background: #456d80; color: white; border: none; padding: 15px; border-radius: 10px; font-weight: bold; margin-top: 15px; }
+        .nav-item.active-tab { color: #456d80; border-top: 4px solid #456d80; background: #f9fbfc; }
+        .calc-btn { width: 100%; background: #456d80; color: white; border: none; padding: 15px; border-radius: 10px; font-weight: bold; margin-top: 20px; }
     </style>
 </head>
 <body>
@@ -47,11 +46,15 @@
             <div class="card" onclick="viewPDF('anthropology.pdf')">🌍<br>Anthro</div>
             <div class="card" onclick="viewPDF('emerging.pdf')">🚀<br>Emerging</div>
         </div>
-        <div class="footer">Developed by: <b>Meseret.T</b><br>ID: <b>1784/18</b><br><b>Wollo University - KIOT</b></div>
+        <div class="footer">
+            Developed by: <b>Meseret.T</b><br>
+            ID: <b>1784/18</b><br>
+            <b>Wollo University - KIOT</b>
+        </div>
     </div>
 
     <div id="gpa-page" class="page">
-        <h3 style="text-align:center; color:#456d80;">GPA Calculator</h3>
+        <h3 style="text-align:center; color: #456d80;">GPA Calculator</h3>
         <div id="gpa-inputs"></div>
         <button class="calc-btn" onclick="calcGPA()">GPA አስላ (Calculate)</button>
         <h2 id="gpa-res" style="text-align:center; color:#456d80; margin-top:15px;"></h2>
@@ -65,7 +68,10 @@
 </div>
 
 <div id="pdf-overlay">
-    <div class="pdf-header"><span id="pdf-title">Viewer</span></div>
+    <div class="pdf-header">
+        <span id="pdf-title">Viewer</span>
+        <button class="close-btn" onclick="closePDF()">X ዝጋ</button>
+    </div>
     <iframe id="pdf-frame"></iframe>
 </div>
 
@@ -83,26 +89,36 @@
     }
 
     function viewPDF(fileName) {
-        const fileUrl = "https://maru10-art.github.io/wollo-uni-kiot-modules/" + fileName;
-        // Google Viewer ዳውንሎድ እንዳይጠይቅ
-        const googleViewer = "https://docs.google.com/gview?embedded=true&url=" + encodeURIComponent(fileUrl);
-        
-        document.getElementById('pdf-frame').src = googleViewer;
-        document.getElementById('pdf-overlay').style.display = 'block';
-        document.getElementById('main-content').style.display = 'none';
+        const overlay = document.getElementById('pdf-overlay');
+        const iframe = document.getElementById('pdf-frame');
+        const main = document.getElementById('main-content');
         document.getElementById('pdf-title').innerText = fileName;
 
-        // የስልኩ መመለሻ ቁልፍ
+        // ዩዘር ስምህ በትክክል Meseretmaru10-art መሆኑ ተስተካክሏል
+        const fileUrl = "https://Meseretmaru10-art.github.io/wollo-uni-kiot-modules/" + fileName;
+        
+        // ቴሌግራም ላይ ዳውንሎድ እንዳይጠይቅ በ Google Viewer ይከፈታል
+        const googleViewer = "https://docs.google.com/gview?embedded=true&url=" + encodeURIComponent(fileUrl);
+        
+        iframe.src = googleViewer;
+        overlay.style.display = 'block';
+        main.style.display = 'none';
+
+        // የስልኩ መመለሻ ቁልፍ እንዲሰራ
         window.history.pushState({ pdfOpen: true }, "");
     }
 
     window.onpopstate = function() {
+        closePDF();
+    };
+
+    function closePDF() {
         document.getElementById('pdf-overlay').style.display = 'none';
         document.getElementById('main-content').style.display = 'block';
         document.getElementById('pdf-frame').src = "";
-    };
+    }
 
-    // GPA መምረጫ ከአዲሱ Grade Scale ጋር
+    // GPA መምረጫ ከአዲሱ Grade Scale ጋር (A+ እስከ F)
     const courses = ["Maths", "C++", "English II", "History", "Civics", "Anthro", "Emerging"];
     const container = document.getElementById('gpa-inputs');
     courses.forEach(c => {
