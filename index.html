@@ -7,23 +7,21 @@
     <link rel="manifest" href="manifest.json">
     <style>
         body { font-family: sans-serif; margin: 0; background: #f4f7f6; padding-bottom: 80px; }
-        .header { background: #456d80; color: white; padding: 18px; text-align: center; font-weight: bold; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        .page { display: none; padding: 15px; animation: fadeIn 0.3s ease; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .header { background: #456d80; color: white; padding: 18px; text-align: center; font-weight: bold; position: sticky; top: 0; z-index: 1000; }
+        .page { display: none; padding: 15px; }
         .active { display: block; }
         .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-        .card { background: white; padding: 25px; border-radius: 15px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.05); cursor: pointer; border: 1px solid #eef; transition: 0.2s; }
+        .card { background: white; padding: 25px; border-radius: 15px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.05); cursor: pointer; }
         .card:active { transform: scale(0.95); background: #f0f4f5; }
-        .footer { text-align: center; padding: 25px; background: #fff; border-top: 3px solid #456d80; margin-top: 30px; line-height: 1.8; font-size: 0.9rem; }
-        .footer b { color: #456d80; font-size: 1.1rem; }
-        .bottom-nav { position: fixed; bottom: 0; width: 100%; background: white; display: flex; border-top: 1px solid #eee; z-index: 2000; height: 65px; box-shadow: 0 -2px 10px rgba(0,0,0,0.05); }
+        .footer { text-align: center; padding: 25px; background: #fff; border-top: 3px solid #456d80; margin-top: 30px; }
+        .footer b { color: #456d80; }
+        .bottom-nav { position: fixed; bottom: 0; width: 100%; background: white; display: flex; height: 65px; border-top: 1px solid #eee; }
         .nav-item { flex: 1; text-align: center; padding: 15px; color: #888; font-weight: bold; cursor: pointer; }
         .nav-item.active-tab { color: #456d80; border-top: 4px solid #456d80; background: #f9fbfc; }
-        .gpa-card { background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-        td { padding: 12px 8px; border-bottom: 1px solid #eee; }
-        select { width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ddd; background: #fff; }
-        .calc-btn { width: 100%; background: #456d80; color: white; border: none; padding: 15px; margin-top: 20px; border-radius: 10px; font-weight: bold; font-size: 1rem; box-shadow: 0 4px 6px rgba(69, 109, 128, 0.3); }
+        .gpa-card { background: white; padding: 20px; border-radius: 15px; }
+        table { width: 100%; border-collapse: collapse; }
+        td { padding: 10px; border-bottom: 1px solid #eee; }
+        .calc-btn { width: 100%; background: #456d80; color: white; border: none; padding: 15px; border-radius: 10px; font-weight: bold; margin-top: 15px; }
     </style>
 </head>
 <body>
@@ -50,13 +48,10 @@
 <div id="gpa-page" class="page">
     <div class="gpa-card">
         <h3 style="text-align:center; color: #456d80;">GPA Calculator</h3>
-        <table>
-            <tbody id="gpa-table"></tbody>
-        </table>
-        <button class="calc-btn" onclick="calcGPA()">GPA አስላ (Calculate)</button>
-        <h2 id="gpa-res" style="text-align:center; color:#456d80; margin-top:15px;"></h2>
+        <table><tbody id="gpa-table"></tbody></table>
+        <button class="calc-btn" onclick="calcGPA()">Calculate GPA</button>
+        <h2 id="gpa-res" style="text-align:center; color:#456d80;"></h2>
     </div>
-    <div class="footer">Developer: <b>Meseret.T</b></div>
 </div>
 
 <div class="bottom-nav">
@@ -77,9 +72,14 @@
         }
     }
 
+    // የ PDF አከፋፈት ማስተካከያ (ለ Offline)
     function viewPDF(fileName) {
-        // በቀጥታ ፋይሉን እንዲከፍት ማድረግ (ለ Offline ይረዳዋል)
-        window.open(fileName, "_blank");
+        const link = document.createElement('a');
+        link.href = fileName;
+        link.target = '_blank';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
     }
 
     const courses = ["Maths", "C++", "English II", "History", "Civics", "Anthro", "Emerging"];
@@ -97,15 +97,12 @@
             tp += (parseFloat(crs[i].value) * parseFloat(grs[i].value));
             tc += parseFloat(crs[i].value);
         }
-        let finalGpa = tc > 0 ? (tp/tc).toFixed(2) : "0.00";
-        document.getElementById('gpa-res').innerText = "GPA: " + finalGpa;
+        document.getElementById('gpa-res').innerText = "GPA: " + (tc > 0 ? (tp/tc).toFixed(2) : "0.00");
     }
 
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
-            navigator.serviceWorker.register('./sw.js')
-            .then(reg => console.log('Service Worker Registered'))
-            .catch(err => console.log('Error:', err));
+            navigator.serviceWorker.register('./sw.js');
         });
     }
 </script>
