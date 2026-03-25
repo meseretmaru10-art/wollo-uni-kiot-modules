@@ -12,76 +12,98 @@
         .active { display: block; }
         .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
         .card { background: white; padding: 25px; border-radius: 15px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.05); cursor: pointer; }
-        
-        /* PDF Viewer Styling */
-        #pdf-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 3000; }
-        .pdf-nav { background: #456d80; color: white; padding: 10px; display: flex; justify-content: space-between; align-items: center; }
-        .close-btn { background: #ff4444; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; }
-        iframe { width: 100%; height: calc(100% - 50px); border: none; }
-
+        .card:active { transform: scale(0.95); background: #f0f4f5; }
         .footer { text-align: center; padding: 25px; background: #fff; border-top: 3px solid #456d80; margin-top: 30px; }
+        .footer b { color: #456d80; }
         .bottom-nav { position: fixed; bottom: 0; width: 100%; background: white; display: flex; height: 65px; border-top: 1px solid #eee; }
-        .nav-item { flex: 1; text-align: center; padding: 15px; color: #888; font-weight: bold; }
-        .active-tab { color: #456d80; border-top: 4px solid #456d80; }
+        .nav-item { flex: 1; text-align: center; padding: 15px; color: #888; font-weight: bold; cursor: pointer; }
+        .nav-item.active-tab { color: #456d80; border-top: 4px solid #456d80; background: #f9fbfc; }
+        .gpa-card { background: white; padding: 20px; border-radius: 15px; }
+        table { width: 100%; border-collapse: collapse; }
+        td { padding: 10px; border-bottom: 1px solid #eee; }
+        .calc-btn { width: 100%; background: #456d80; color: white; border: none; padding: 15px; border-radius: 10px; font-weight: bold; margin-top: 15px; }
     </style>
 </head>
 <body>
 
-<div id="app-body">
-    <div class="header">Wollo University - KIOT Hub</div>
+<div class="header">Wollo University - KIOT Hub</div>
 
-    <div id="mod-page" class="page active">
-        <div class="grid">
-            <div class="card" onclick="smartViewPDF('maths.pdf')">📐<br>Maths</div>
-            <div class="card" onclick="smartViewPDF('cpp.pdf')">💻<br>C++</div>
-            <div class="card" onclick="smartViewPDF('english2.pdf')">📖<br>English II</div>
-            <div class="card" onclick="smartViewPDF('history.pdf')">⏳<br>History</div>
-            <div class="card" onclick="smartViewPDF('civics.pdf')">⚖️<br>Civics</div>
-            <div class="card" onclick="smartViewPDF('anthropology.pdf')">🌍<br>Anthro</div>
-            <div class="card" onclick="smartViewPDF('emerging.pdf')">🚀<br>Emerging</div>
-        </div>
-        <div class="footer">Developer: <b>Meseret.T</b><br>ID: <b>1784/18</b></div>
+<div id="mod-page" class="page active">
+    <div class="grid">
+        <div class="card" onclick="viewPDF('maths.pdf')">📐<br>Maths</div>
+        <div class="card" onclick="viewPDF('cpp.pdf')">💻<br>C++</div>
+        <div class="card" onclick="viewPDF('english2.pdf')">📖<br>English II</div>
+        <div class="card" onclick="viewPDF('history.pdf')">⏳<br>History</div>
+        <div class="card" onclick="viewPDF('civics.pdf')">⚖️<br>Civics</div>
+        <div class="card" onclick="viewPDF('anthropology.pdf')">🌍<br>Anthro</div>
+        <div class="card" onclick="viewPDF('emerging.pdf')">🚀<br>Emerging</div>
     </div>
+    <div class="footer">
+        Developer: <b>Meseret.T</b><br>
+        ID: <b>1784/18</b><br>
+        <b>Wollo University - KIOT</b>
+    </div>
+</div>
 
+<div id="gpa-page" class="page">
+    <div class="gpa-card">
+        <h3 style="text-align:center; color: #456d80;">GPA Calculator</h3>
+        <table><tbody id="gpa-table"></tbody></table>
+        <button class="calc-btn" onclick="calcGPA()">Calculate GPA</button>
+        <h2 id="gpa-res" style="text-align:center; color:#456d80;"></h2>
     </div>
+</div>
 
-<div id="pdf-overlay">
-    <div class="pdf-nav">
-        <span id="pdf-name">Viewer</span>
-        <button class="close-btn" onclick="closePDF()">X ዝጋ</button>
-    </div>
-    <iframe id="pdf-frame"></iframe>
+<div class="bottom-nav">
+    <div class="nav-item active-tab" id="tab-mod" onclick="showTab('mod')">📚 Modules</div>
+    <div class="nav-item" id="tab-gpa" onclick="showTab('gpa')">📊 GPA Calc</div>
 </div>
 
 <script>
-    function smartViewPDF(fileName) {
-        const overlay = document.getElementById('pdf-overlay');
-        const iframe = document.getElementById('pdf-frame');
-        document.getElementById('pdf-name').innerText = fileName;
-
-        // የፋይሉ ሙሉ አድራሻ (Github link)
-        const fullUrl = `https://meseretmaru10-art.github.io/wollo-uni-kiot-modules/${fileName}`;
-
-        if (navigator.onLine) {
-            // ዳታ ካለ: በ Google Viewer ቀጥታ አፑ ውስጥ እንዲከፍት
-            iframe.src = `https://docs.google.com/gview?embedded=true&url=${fullUrl}`;
-            overlay.style.display = 'block';
-            document.getElementById('app-body').style.display = 'none';
+    function showTab(tab) {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active-tab'));
+        if(tab === 'mod') {
+            document.getElementById('mod-page').classList.add('active');
+            document.getElementById('tab-mod').classList.add('active-tab');
         } else {
-            // ዳታ ከሌለ (Offline): በስልኩ የራሱ መንገድ እንዲከፍተው
-            window.location.href = fileName;
+            document.getElementById('gpa-page').classList.add('active');
+            document.getElementById('tab-gpa').classList.add('active-tab');
         }
     }
 
-    function closePDF() {
-        document.getElementById('pdf-overlay').style.display = 'none';
-        document.getElementById('app-body').style.display = 'block';
-        document.getElementById('pdf-frame').src = "";
+    // የ PDF አከፋፈት ማስተካከያ (ለ Offline)
+    function viewPDF(fileName) {
+        const link = document.createElement('a');
+        link.href = fileName;
+        link.target = '_blank';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
     }
 
-    // Tab switching and Service Worker logic...
+    const courses = ["Maths", "C++", "English II", "History", "Civics", "Anthro", "Emerging"];
+    const tbody = document.getElementById('gpa-table');
+    courses.forEach(c => {
+        tbody.innerHTML += `<tr><td><b>${c}</b></td>
+            <td><select class="cr"><option value="3">3 Cr</option><option value="4">4 Cr</option><option value="5">5 Cr</option></select></td>
+            <td><select class="gr"><option value="4">A</option><option value="3.5">B+</option><option value="3">B</option><option value="2">C</option><option value="0">F</option></select></td></tr>`;
+    });
+
+    function calcGPA() {
+        let tp = 0, tc = 0;
+        let crs = document.querySelectorAll('.cr'), grs = document.querySelectorAll('.gr');
+        for(let i=0; i<crs.length; i++) {
+            tp += (parseFloat(crs[i].value) * parseFloat(grs[i].value));
+            tc += parseFloat(crs[i].value);
+        }
+        document.getElementById('gpa-res').innerText = "GPA: " + (tc > 0 ? (tp/tc).toFixed(2) : "0.00");
+    }
+
     if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('./sw.js');
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('./sw.js');
+        });
     }
 </script>
 </body>
