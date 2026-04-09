@@ -3,47 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>KIOT Hub - Wollo University</title>
+    <title>KIOT Hub</title>
     <link rel="manifest" href="manifest.json">
     <style>
-        body { font-family: sans-serif; margin: 0; background: #f4f7f6; padding-bottom: 90px; overflow-x: hidden; }
-        .header-logo { background: #456d80; color: white; padding: 15px; text-align: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
-        .header-logo img { width: 60px; height: 60px; border-radius: 50%; background: white; padding: 2px; margin-bottom: 5px; }
-        .header-logo div { font-size: 18px; font-weight: bold; }
-
-        .page { display: none; padding: 15px; animation: fadeIn 0.3s ease; }
+        body { font-family: sans-serif; margin: 0; background: #f4f7f6; padding-bottom: 90px; }
+        .header-logo { background: #456d80; color: white; padding: 15px; text-align: center; position: sticky; top: 0; z-index: 1000; }
+        .header-logo img { width: 55px; border-radius: 50%; background: white; padding: 2px; }
+        
+        .page { display: none; padding: 15px; }
         .active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
+        /* Modules Grid */
         .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-        .card { background: white; padding: 20px; border-radius: 18px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.08); cursor: pointer; border: 1px solid #eef; }
-        .card:active { transform: scale(0.92); }
+        .card { background: white; padding: 20px; border-radius: 15px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.05); cursor: pointer; }
+        
+        /* GPA Styles */
+        .gpa-card { background: white; padding: 20px; border-radius: 20px; }
+        .gpa-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 1px solid #eee; padding-bottom: 8px; }
+        select { padding: 8px; border-radius: 5px; border: 1px solid #ccc; }
 
-        .gpa-card { background: white; padding: 20px; border-radius: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
-        .gpa-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid #f0f0f0; }
-        .selectors { display: flex; gap: 8px; }
-        select { padding: 10px; border-radius: 8px; border: 1.5px solid #ddd; background: #fff; font-size: 14px; }
-        .calc-btn { width: 100%; background: #456d80; color: white; border: none; padding: 16px; border-radius: 12px; font-weight: bold; margin-top: 20px; font-size: 17px; }
+        /* Navigation */
+        .bottom-nav { position: fixed; bottom: 0; width: 100%; background: white; display: flex; height: 70px; border-top: 1px solid #eee; }
+        .nav-item { flex: 1; text-align: center; padding-top: 15px; color: #888; font-weight: bold; }
+        .active-tab { color: #456d80; border-top: 4px solid #456d80; background: #f9f9f9; }
 
-        .bottom-nav { position: fixed; bottom: 0; width: 100%; background: white; display: flex; border-top: 1px solid #eee; height: 70px; z-index: 2000; }
-        .nav-item { flex: 1; text-align: center; padding-top: 15px; color: #888; font-weight: bold; cursor: pointer; }
-        .nav-item.active-tab { color: #456d80; border-top: 4px solid #456d80; background: #f4faff; }
-
-        .user-footer { text-align: center; padding: 25px; background: #fff; border-radius: 15px; border-top: 4px solid #456d80; margin-top: 30px; }
-        .id-badge { display: inline-block; background: #ff5252; color: white; padding: 2px 10px; border-radius: 20px; font-size: 12px; margin-top: 5px; }
-
-        /* ፒዲኤፉ "Open" በተን ሳይመጣ ቀጥታ እንዲከፈት */
+        /* PDF Viewer Overlay */
         #pdf-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 3000; }
-        .close-btn { position: absolute; top: 10px; right: 10px; background: #ff5252; color: white; border: none; width: 40px; height: 40px; border-radius: 50%; font-weight: bold; z-index: 3001; }
-        #pdf-frame { width: 100%; height: 100%; border: none; }
+        .close-btn { position: absolute; top: 10px; right: 10px; background: #ff5252; color: white; border: none; width: 40px; height: 40px; border-radius: 50%; font-weight: bold; }
+        iframe { width: 100%; height: 100%; border: none; }
+
+        .footer { text-align: center; padding: 20px; margin-top: 20px; background: white; border-radius: 15px; }
+        .id-badge { background: #ff5252; color: white; padding: 2px 10px; border-radius: 20px; font-size: 12px; }
     </style>
 </head>
 <body>
 
 <div id="main-content">
     <div class="header-logo">
-        <img src="icon.png" alt="Logo">
-        <div>KIOT Hub</div>
+        <img src="icon.png" alt="Logo"><br>
+        <strong>KIOT Hub</strong>
     </div>
 
     <div id="mod-page" class="page active">
@@ -56,7 +54,7 @@
             <div class="card" onclick="viewPDF('anthropology.pdf')">🌍<br>Anthro</div>
             <div class="card" onclick="viewPDF('emerging.pdf')">🚀<br>Emerging</div>
         </div>
-        <div class="user-footer">
+        <div class="footer">
             Developed by: <b>MESERET.T</b><br>
             <span class="id-badge">ID: 1784/18</span><br>
             <b>WOLLO KIOT</b>
@@ -65,10 +63,10 @@
 
     <div id="gpa-page" class="page">
         <div class="gpa-card">
-            <h3 style="text-align:center; color:#456d80;">GPA Calculator</h3>
+            <h3 style="text-align:center;">GPA Calculator</h3>
             <div id="gpa-inputs"></div>
-            <button class="calc-btn" onclick="calcGPA()">GPA አስላ</button>
-            <div id="gpa-res" style="text-align:center; color:#456d80; margin-top:20px; font-size:24px; font-weight:bold;">GPA: 0.00</div>
+            <button onclick="calcGPA()" style="width:100%; padding:15px; background:#456d80; color:white; border:none; border-radius:10px; font-weight:bold; margin-top:15px;">GPA አስላ</button>
+            <div id="gpa-res" style="text-align:center; font-size:24px; font-weight:bold; margin-top:15px; color:#456d80;">GPA: 0.00</div>
         </div>
     </div>
 
@@ -99,12 +97,14 @@
     function viewPDF(fileName) {
         const overlay = document.getElementById('pdf-overlay');
         const iframe = document.getElementById('pdf-frame');
-        const main = document.getElementById('main-content');
         
-        // ቴሌግራም ላይ ቀጥታ እንዲከፍት የተስተካከለ URL
-        iframe.src = fileName + "#toolbar=0&navpanes=0&scrollbar=0"; 
+        // ያ ሰማያዊ በተን እንዳይመጣ በGoogle Viewer በኩል እናሳልፈዋለን (ወይም ፋይሉን ቀጥታ)
+        // ማሳሰቢያ፡ ፋይሉ GitHub ላይ ከተጫነ በኋላ ነው በትክክል የሚከፍተው
+        const fileUrl = window.location.href.replace('index.html', '') + fileName;
+        iframe.src = "https://docs.google.com/viewer?url=" + encodeURIComponent(fileUrl) + "&embedded=true";
+        
         overlay.style.display = 'block';
-        main.style.display = 'none';
+        document.getElementById('main-content').style.display = 'none';
         window.history.pushState({ pdfOpen: true }, "");
     }
 
@@ -119,13 +119,14 @@
     const courses = ["Maths", "C++", "English II", "History", "Civics", "Anthro", "Emerging"];
     const container = document.getElementById('gpa-inputs');
     
-    // የተሟላ የውጤት ዝርዝር (D+, D, C- ተጨምረዋል)
     courses.forEach(c => {
         container.innerHTML += `
         <div class="gpa-row">
             <b>${c}</b>
-            <div class="selectors">
-                <select class="cr"><option value="3">3 Cr</option><option value="4">4 Cr</option><option value="5">5 Cr</option></select>
+            <div style="display:flex; gap:5px;">
+                <select class="cr">
+                    <option value="3">3 Cr</option><option value="4">4 Cr</option><option value="5">5 Cr</option>
+                </select>
                 <select class="gr">
                     <option value="4">A+</option><option value="4">A</option><option value="3.75">A-</option>
                     <option value="3.5">B+</option><option value="3">B</option><option value="2.75">B-</option>
@@ -145,10 +146,6 @@
             tc += parseFloat(crs[i].value);
         }
         document.getElementById('gpa-res').innerText = "GPA: " + (tp / tc).toFixed(2);
-    }
-
-    if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('./sw.js');
     }
 </script>
 </body>
