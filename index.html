@@ -9,58 +9,53 @@
         body { font-family: sans-serif; margin: 0; background: #f4f7f6; padding-bottom: 90px; overflow-x: hidden; }
         .header-logo { background: #456d80; color: white; padding: 15px; text-align: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
         .header-logo img { width: 60px; height: 60px; border-radius: 50%; background: white; padding: 2px; margin-bottom: 5px; }
-        .header-logo div { font-size: 18px; font-weight: bold; letter-spacing: 1px; }
+        .header-logo div { font-size: 18px; font-weight: bold; }
 
         .page { display: none; padding: 15px; animation: fadeIn 0.3s ease; }
         .active { display: block; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 10px; }
-        .card { background: white; padding: 20px; border-radius: 18px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.08); cursor: pointer; border: 1px solid #eef; transition: 0.2s; }
-        .card:active { transform: scale(0.92); background: #f0f7f9; }
-        .card-icon { font-size: 24px; margin-bottom: 8px; display: block; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .card { background: white; padding: 20px; border-radius: 18px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.08); cursor: pointer; border: 1px solid #eef; }
+        .card:active { transform: scale(0.92); }
 
         .gpa-card { background: white; padding: 20px; border-radius: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
         .gpa-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid #f0f0f0; }
-        .gpa-row b { font-size: 14px; color: #333; flex: 1; }
-        .selectors { display: flex; gap: 8px; flex: 2; justify-content: flex-end; }
-        select { padding: 10px; border-radius: 8px; border: 1.5px solid #ddd; background: #fff; font-size: 14px; outline: none; }
-        
+        .selectors { display: flex; gap: 8px; }
+        select { padding: 10px; border-radius: 8px; border: 1.5px solid #ddd; background: #fff; font-size: 14px; }
         .calc-btn { width: 100%; background: #456d80; color: white; border: none; padding: 16px; border-radius: 12px; font-weight: bold; margin-top: 20px; font-size: 17px; }
 
         .bottom-nav { position: fixed; bottom: 0; width: 100%; background: white; display: flex; border-top: 1px solid #eee; height: 70px; z-index: 2000; }
-        .nav-item { flex: 1; text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center; color: #888; cursor: pointer; font-size: 13px; font-weight: bold; }
-        .nav-item.active-tab { color: #456d80; background: #f4faff; border-top: 4px solid #456d80; }
+        .nav-item { flex: 1; text-align: center; padding-top: 15px; color: #888; font-weight: bold; cursor: pointer; }
+        .nav-item.active-tab { color: #456d80; border-top: 4px solid #456d80; background: #f4faff; }
 
         .user-footer { text-align: center; padding: 25px; background: #fff; border-radius: 15px; border-top: 4px solid #456d80; margin-top: 30px; }
-        .user-footer b { color: #456d80; font-size: 16px; }
         .id-badge { display: inline-block; background: #ff5252; color: white; padding: 2px 10px; border-radius: 20px; font-size: 12px; margin-top: 5px; }
 
-        /* ፒዲኤፉን በቀጥታ እንዲከፍት የተስተካከለ Overlay */
+        /* ፒዲኤፍ በቀጥታ እንዲከፍት የተስተካከለ */
         #pdf-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 3000; }
         .close-btn { position: absolute; top: 10px; right: 10px; background: #ff5252; color: white; border: none; width: 40px; height: 40px; border-radius: 50%; font-weight: bold; z-index: 3001; }
-        #pdf-frame { width: 100%; height: 100%; border: none; position: absolute; top: 0; left: 0; }
+        embed { width: 100%; height: 100%; }
     </style>
 </head>
 <body>
 
 <div id="main-content">
     <div class="header-logo">
-        <img src="icon.png" alt="Wollo University Logo">
+        <img src="icon.png" alt="Logo">
         <div>KIOT Hub</div>
     </div>
 
     <div id="mod-page" class="page active">
         <div class="grid">
-            <div class="card" onclick="viewPDF('maths.pdf')"><span class="card-icon">📐</span>Maths</div>
-            <div class="card" onclick="viewPDF('cpp.pdf')"><span class="card-icon">💻</span>C++</div>
-            <div class="card" onclick="viewPDF('english2.pdf')"><span class="card-icon">📖</span>English II</div>
-            <div class="card" onclick="viewPDF('history.pdf')"><span class="card-icon">⏳</span>History</div>
-            <div class="card" onclick="viewPDF('civics.pdf')"><span class="card-icon">⚖️</span>Civics</div>
-            <div class="card" onclick="viewPDF('anthropology.pdf')"><span class="card-icon">🌍</span>Anthro</div>
-            <div class="card" onclick="viewPDF('emerging.pdf')"><span class="card-icon">🚀</span>Emerging</div>
+            <div class="card" onclick="viewPDF('maths.pdf')">📐<br>Maths</div>
+            <div class="card" onclick="viewPDF('cpp.pdf')">💻<br>C++</div>
+            <div class="card" onclick="viewPDF('english2.pdf')">📖<br>English II</div>
+            <div class="card" onclick="viewPDF('history.pdf')">⏳<br>History</div>
+            <div class="card" onclick="viewPDF('civics.pdf')">⚖️<br>Civics</div>
+            <div class="card" onclick="viewPDF('anthropology.pdf')">🌍<br>Anthro</div>
+            <div class="card" onclick="viewPDF('emerging.pdf')">🚀<br>Emerging</div>
         </div>
-
         <div class="user-footer">
             Developed by: <b>MESERET.T</b><br>
             <span class="id-badge">ID: 1784/18</span><br>
@@ -72,20 +67,20 @@
         <div class="gpa-card">
             <h3 style="text-align:center; color:#456d80;">GPA Calculator</h3>
             <div id="gpa-inputs"></div>
-            <button class="calc-btn" onclick="calcGPA()">GPA አስላ (Calculate)</button>
+            <button class="calc-btn" onclick="calcGPA()">GPA አስላ</button>
             <div id="gpa-res" style="text-align:center; color:#456d80; margin-top:20px; font-size:24px; font-weight:bold;">GPA: 0.00</div>
         </div>
     </div>
 
     <div class="bottom-nav">
-        <div class="nav-item active-tab" id="tab-mod" onclick="showTab('mod')"><span>📚</span><br>Modules</div>
-        <div class="nav-item" id="tab-gpa" onclick="showTab('gpa')"><span>📊</span><br>GPA Calc</div>
+        <div class="nav-item active-tab" id="tab-mod" onclick="showTab('mod')">📚 Modules</div>
+        <div class="nav-item" id="tab-gpa" onclick="showTab('gpa')">📊 GPA Calc</div>
     </div>
 </div>
 
 <div id="pdf-overlay">
     <button class="close-btn" onclick="closePDF()">X</button>
-    <iframe id="pdf-frame" src="" type="application/pdf"></iframe>
+    <div id="pdf-container" style="width:100%; height:100%;"></div>
 </div>
 
 <script>
@@ -103,11 +98,11 @@
 
     function viewPDF(fileName) {
         const overlay = document.getElementById('pdf-overlay');
-        const iframe = document.getElementById('pdf-frame');
+        const container = document.getElementById('pdf-container');
         const main = document.getElementById('main-content');
         
-        // ቀጥታ በብሮውዘሩ እንዲከፈት
-        iframe.src = fileName; 
+        // embed መጠቀም "Open" በተን እንዳይመጣ ይረዳል
+        container.innerHTML = `<embed src="${fileName}" type="application/pdf">`;
         overlay.style.display = 'block';
         main.style.display = 'none';
         window.history.pushState({ pdfOpen: true }, "");
@@ -116,7 +111,7 @@
     function closePDF() {
         document.getElementById('pdf-overlay').style.display = 'none';
         document.getElementById('main-content').style.display = 'block';
-        document.getElementById('pdf-frame').src = "";
+        document.getElementById('pdf-container').innerHTML = "";
     }
 
     window.onpopstate = function() { closePDF(); };
@@ -124,20 +119,18 @@
     const courses = ["Maths", "C++", "English II", "History", "Civics", "Anthro", "Emerging"];
     const container = document.getElementById('gpa-inputs');
     
+    // እዚህ ጋር D+ እና D ተጨምረዋል
     courses.forEach(c => {
         container.innerHTML += `
         <div class="gpa-row">
             <b>${c}</b>
             <div class="selectors">
-                <select class="cr">
-                    <option value="3">3 Cr</option>
-                    <option value="4">4 Cr</option>
-                    <option value="5">5 Cr</option>
-                </select>
+                <select class="cr"><option value="3">3 Cr</option><option value="4">4 Cr</option><option value="5">5 Cr</option></select>
                 <select class="gr">
                     <option value="4">A+</option><option value="4">A</option><option value="3.75">A-</option>
                     <option value="3.5">B+</option><option value="3">B</option><option value="2.75">B-</option>
-                    <option value="2.5">C+</option><option value="2">C</option><option value="0">F</option>
+                    <option value="2.5">C+</option><option value="2">C</option><option value="1.75">C-</option>
+                    <option value="1.5">D+</option><option value="1">D</option><option value="0">F</option>
                 </select>
             </div>
         </div>`;
@@ -148,10 +141,8 @@
         const crs = document.querySelectorAll('.cr');
         const grs = document.querySelectorAll('.gr');
         for (let i = 0; i < crs.length; i++) {
-            let credit = parseFloat(crs[i].value);
-            let grade = parseFloat(grs[i].value);
-            tp += (credit * grade);
-            tc += credit;
+            tp += (parseFloat(crs[i].value) * parseFloat(grs[i].value));
+            tc += parseFloat(crs[i].value);
         }
         document.getElementById('gpa-res').innerText = "GPA: " + (tp / tc).toFixed(2);
     }
