@@ -7,8 +7,6 @@
     <link rel="manifest" href="manifest.json">
     <style>
         body { font-family: sans-serif; margin: 0; background: #f4f7f6; padding-bottom: 90px; overflow-x: hidden; }
-        
-        /* ከላይ የሚታየው አርማ እና ርዕስ */
         .header-logo { background: #456d80; color: white; padding: 15px; text-align: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
         .header-logo img { width: 60px; height: 60px; border-radius: 50%; background: white; padding: 2px; margin-bottom: 5px; }
         .header-logo div { font-size: 18px; font-weight: bold; letter-spacing: 1px; }
@@ -17,36 +15,31 @@
         .active { display: block; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* Modules Grid */
         .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 10px; }
         .card { background: white; padding: 20px; border-radius: 18px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.08); cursor: pointer; border: 1px solid #eef; transition: 0.2s; }
         .card:active { transform: scale(0.92); background: #f0f7f9; }
         .card-icon { font-size: 24px; margin-bottom: 8px; display: block; }
 
-        /* GPA Calculator Styles */
         .gpa-card { background: white; padding: 20px; border-radius: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
         .gpa-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid #f0f0f0; }
         .gpa-row b { font-size: 14px; color: #333; flex: 1; }
         .selectors { display: flex; gap: 8px; flex: 2; justify-content: flex-end; }
         select { padding: 10px; border-radius: 8px; border: 1.5px solid #ddd; background: #fff; font-size: 14px; outline: none; }
-        select:focus { border-color: #456d80; }
-        .calc-btn { width: 100%; background: #456d80; color: white; border: none; padding: 16px; border-radius: 12px; font-weight: bold; margin-top: 20px; font-size: 17px; box-shadow: 0 4px 10px rgba(69, 109, 128, 0.3); }
+        
+        .calc-btn { width: 100%; background: #456d80; color: white; border: none; padding: 16px; border-radius: 12px; font-weight: bold; margin-top: 20px; font-size: 17px; }
 
-        /* Bottom Navigation */
-        .bottom-nav { position: fixed; bottom: 0; width: 100%; background: white; display: flex; border-top: 1px solid #eee; height: 70px; z-index: 2000; box-shadow: 0 -2px 10px rgba(0,0,0,0.05); }
+        .bottom-nav { position: fixed; bottom: 0; width: 100%; background: white; display: flex; border-top: 1px solid #eee; height: 70px; z-index: 2000; }
         .nav-item { flex: 1; text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center; color: #888; cursor: pointer; font-size: 13px; font-weight: bold; }
         .nav-item.active-tab { color: #456d80; background: #f4faff; border-top: 4px solid #456d80; }
-        .nav-icon { font-size: 20px; margin-bottom: 2px; }
 
-        /* Footer Info */
-        .user-footer { text-align: center; padding: 25px; background: #fff; border-radius: 15px; border-top: 4px solid #456d80; margin-top: 30px; box-shadow: 0 -2px 10px rgba(0,0,0,0.02); }
+        .user-footer { text-align: center; padding: 25px; background: #fff; border-radius: 15px; border-top: 4px solid #456d80; margin-top: 30px; }
         .user-footer b { color: #456d80; font-size: 16px; }
         .id-badge { display: inline-block; background: #ff5252; color: white; padding: 2px 10px; border-radius: 20px; font-size: 12px; margin-top: 5px; }
 
-        /* PDF Overlay */
+        /* ፒዲኤፉን በቀጥታ እንዲከፍት የተስተካከለ Overlay */
         #pdf-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 3000; }
-        .close-btn { position: absolute; top: 15px; right: 15px; background: #ff5252; color: white; border: none; width: 40px; height: 40px; border-radius: 50%; font-weight: bold; z-index: 3001; }
-        iframe { width: 100%; height: 100%; border: none; }
+        .close-btn { position: absolute; top: 10px; right: 10px; background: #ff5252; color: white; border: none; width: 40px; height: 40px; border-radius: 50%; font-weight: bold; z-index: 3001; }
+        #pdf-frame { width: 100%; height: 100%; border: none; position: absolute; top: 0; left: 0; }
     </style>
 </head>
 <body>
@@ -77,33 +70,22 @@
 
     <div id="gpa-page" class="page">
         <div class="gpa-card">
-            <h3 style="text-align:center; color:#456d80; margin-bottom:20px;">GPA Calculator</h3>
+            <h3 style="text-align:center; color:#456d80;">GPA Calculator</h3>
             <div id="gpa-inputs"></div>
             <button class="calc-btn" onclick="calcGPA()">GPA አስላ (Calculate)</button>
             <div id="gpa-res" style="text-align:center; color:#456d80; margin-top:20px; font-size:24px; font-weight:bold;">GPA: 0.00</div>
         </div>
-        
-        <div class="user-footer">
-            Developed by: <b>MESERET.T</b><br>
-            <b>WOLLO KIOT</b>
-        </div>
     </div>
 
     <div class="bottom-nav">
-        <div class="nav-item active-tab" id="tab-mod" onclick="showTab('mod')">
-            <span class="nav-icon">📚</span>
-            <span>Modules</span>
-        </div>
-        <div class="nav-item" id="tab-gpa" onclick="showTab('gpa')">
-            <span class="nav-icon">📊</span>
-            <span>GPA Calc</span>
-        </div>
+        <div class="nav-item active-tab" id="tab-mod" onclick="showTab('mod')"><span>📚</span><br>Modules</div>
+        <div class="nav-item" id="tab-gpa" onclick="showTab('gpa')"><span>📊</span><br>GPA Calc</div>
     </div>
 </div>
 
 <div id="pdf-overlay">
     <button class="close-btn" onclick="closePDF()">X</button>
-    <iframe id="pdf-frame" src=""></iframe>
+    <iframe id="pdf-frame" src="" type="application/pdf"></iframe>
 </div>
 
 <script>
@@ -123,7 +105,9 @@
         const overlay = document.getElementById('pdf-overlay');
         const iframe = document.getElementById('pdf-frame');
         const main = document.getElementById('main-content');
-        iframe.src = "./" + fileName; 
+        
+        // ቀጥታ በብሮውዘሩ እንዲከፈት
+        iframe.src = fileName; 
         overlay.style.display = 'block';
         main.style.display = 'none';
         window.history.pushState({ pdfOpen: true }, "");
@@ -137,7 +121,6 @@
 
     window.onpopstate = function() { closePDF(); };
 
-    // GPA Inputs Generation - አሁን ሁሉንም ውጤቶች ያካትታል
     const courses = ["Maths", "C++", "English II", "History", "Civics", "Anthro", "Emerging"];
     const container = document.getElementById('gpa-inputs');
     
@@ -152,18 +135,9 @@
                     <option value="5">5 Cr</option>
                 </select>
                 <select class="gr">
-                    <option value="4">A+</option>
-                    <option value="4">A</option>
-                    <option value="3.75">A-</option>
-                    <option value="3.5">B+</option>
-                    <option value="3">B</option>
-                    <option value="2.75">B-</option>
-                    <option value="2.5">C+</option>
-                    <option value="2">C</option>
-                    <option value="1.75">C-</option>
-                    <option value="1.5">D+</option>
-                    <option value="1">D</option>
-                    <option value="0">F</option>
+                    <option value="4">A+</option><option value="4">A</option><option value="3.75">A-</option>
+                    <option value="3.5">B+</option><option value="3">B</option><option value="2.75">B-</option>
+                    <option value="2.5">C+</option><option value="2">C</option><option value="0">F</option>
                 </select>
             </div>
         </div>`;
