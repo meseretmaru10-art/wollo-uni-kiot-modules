@@ -1,4 +1,4 @@
-const CACHE_NAME = 'kiot-hub-v30';
+const CACHE_NAME = 'kiot-hub-v31';
 const assets = [
   './',
   './index.html',
